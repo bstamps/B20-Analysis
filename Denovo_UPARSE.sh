@@ -2,8 +2,15 @@
 
 #To analyze multiple Illumina MiSeq runs using the most recent primer set, a slightly different pipeline is required
 #This includes analyzing the 16S and 18S amplified together independently. 
+#Software/Databases Required
+#QIIME 1.9.1
+#USEARCH 8
+#NOTE: This version of my workflow requires a 64 bit version of UPARSE due to the number of samples processed. 
+#SILVA r123 formatted for use within QIIME. I followed the instructions at https://github.com/mikerobeson/Misc_Code/tree/master/SILVA_to_RDP. 
+
 
 # Use QIIME to prepare your FASTQ files. No reverse primer is required for 18S reads. 
+echo "Beginning, extracting barcodes and reads" 
 extract_barcodes.py -f seq/splitRuns/Run1_Joined.fastq  -a -m tags.txt -l 12 -o seq/splitRuns/preppedRun1/
 extract_barcodes.py -f seq/splitRuns/Run2_Joined.fastq  -a -m tags.txt -l 12 -o seq/splitRuns/preppedRun2/
 extract_barcodes.py -f seq/splitRuns/Run1_Euk1.fastq  -l 12 -o seq/splitRuns/preppedRun1EukA/
@@ -11,6 +18,7 @@ extract_barcodes.py -f seq/splitRuns/Run1_Euk2.fastq  -l 12 -o seq/splitRuns/pre
 extract_barcodes.py -f seq/splitRuns/Run2_Euk1.fastq  -l 12 -o seq/splitRuns/preppedRun2EukA/
 extract_barcodes.py -f seq/splitRuns/Run2_Euk2.fastq  -l 12 -o seq/splitRuns/preppedRun2EukB/
 
+echo "Creating needed directories, and joining required files"
 mkdir seq/splitRuns/preppedRun1Euk
 mkdir seq/splitRuns/preppedRun2Euk
 mkdir seq/SlOut/
